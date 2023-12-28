@@ -1,5 +1,4 @@
 package com.example.subway2.entity;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -39,9 +38,9 @@ public class SubwayStationInfo {
     @Column(name = "telNo")
     private String telNo;
 
-    public SubwayStationInfo(Long openApiId, String railOprIsttCd, String lnCd, String stinCd,
+    public SubwayStationInfo(String railOprIsttCd, String lnCd, String stinCd,
                              String exitNo, String impFaclNm, String dst, String adr, String telNo) {
-        this.openApiId = openApiId;
+//        this.openApiId = openApiId;
         this.railOprIsttCd = railOprIsttCd;
         this.lnCd = lnCd;
         this.stinCd = stinCd;

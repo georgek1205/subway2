@@ -22,14 +22,15 @@ import java.util.List;
 public class SubwayStationInfoController {
 
     private final SubwayStationInfoRepository subwayStationInfoRepository;
-    @RequestMapping("/api")
+
+    @RequestMapping("/subwayinfo")
     public String save() throws IOException
     {
+        int numofTuples = 0;
         String result = " ";
         String filePath = "/Users/seunggyukim/Downloads/운영기관_역사_코드정보_2023.09.26.xlsx";
         ExcelReader excelReader = new ExcelReader();
         List<StationCode> stationCodes = excelReader.readExcelFile(filePath);
-//        System.out.println("size of station code is " + stationCodes.size());
         int exceptionTrace = 0;
         try {
             for(StationCode tempIdx : stationCodes)
@@ -56,7 +57,7 @@ public class SubwayStationInfoController {
                     for (int i = 0; i < array.size(); i++) {
                         JSONObject tmp = (JSONObject) array.get(i);
                         SubwayStationInfo subwayStationInfo = new SubwayStationInfo(
-                                i + (long) 1,
+                                //여기서 pk를 생성자로 설정하면 GenratedValue 어노테이션으로 쓴 의미가없어지고 충돌이나서 쓰지말자.
                                 String.valueOf(tmp.get("railOprIsttCd")),
                                 String.valueOf(tmp.get("lnCd")),
                                 String.valueOf(tmp.get("stinCd")),
@@ -67,6 +68,7 @@ public class SubwayStationInfoController {
                                 String.valueOf(tmp.get("telNo")));
                                 //이거 valueOf를 하는이유는 null이 널말고 string "null"로 들어갈수있기때문에 타입캐스팅 오류가 날수있어서.
                         subwayStationInfoRepository.save(subwayStationInfo);
+                        numofTuples++;
                     }
                 }
             }
@@ -76,6 +78,7 @@ public class SubwayStationInfoController {
             e.printStackTrace();
             exceptionTrace++;
         }
+        System.out.println(numofTuples + "tuples created");
         System.out.println("exception occured : " + exceptionTrace);
         return "index";
     }
