@@ -1,13 +1,14 @@
 package com.example.subway2.entity;
 
+
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "Subway_Station_Toilet_Info")
-public class SubwayStationToiletInfo {
+@Table(name = "Subway_Station_Disabled_Toilet_Info")
+public class SubwayStationDisabledToiletInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "openApiId")
@@ -46,11 +47,10 @@ public class SubwayStationToiletInfo {
     @Column(name = "diapExchNum")
     private String diapExchNum;
 
-    public SubwayStationToiletInfo(String railOprIsttCd, String lnCd,
-                                   String stinCd, String grndDvNm, String stinFlor, String gateInotDvNm,
-                                   String exitNo, String dtlLoc, String mlFmlDvNm, String toltNum,
-                                   String diapExchNum) {
-//        this.openApiId = openApiId;
+    public SubwayStationDisabledToiletInfo(String railOprIsttCd, String lnCd, String stinCd,
+                                           String grndDvNm, String stinFlor, String gateInotDvNm,
+                                           String exitNo, String dtlLoc, String mlFmlDvNm,
+                                           String toltNum, String diapExchNum) {
         this.railOprIsttCd = railOprIsttCd;
         this.lnCd = lnCd;
         this.stinCd = stinCd;

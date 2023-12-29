@@ -2,14 +2,15 @@ package com.example.subway2.controller;
 
 import com.example.subway2.ExcelReader;
 import com.example.subway2.StationCode;
-import com.example.subway2.entity.SubwayStationToiletInfo;
-import com.example.subway2.repository.SubwayStationToiletInfoRepository;
+import com.example.subway2.entity.SubwayStationDisabledToiletInfo;
+import com.example.subway2.repository.SubwayStationDisabledToiletInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,10 +20,11 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class SubwayStationToiletInfoController {
-    private final SubwayStationToiletInfoRepository subwayStationToiletInfoRepository;
+public class SubwayStationDisabledToiletController {
 
-    @RequestMapping("/toilet")
+    private final SubwayStationDisabledToiletInfoRepository subwayStationDisabledToiletInfoRepository;
+    //rest 한 api들은 "_"(언더바를) 인식을 못해서 하이픈을 써주자
+    @RequestMapping("/dis-toilet")
     public String save() throws IOException
     {
         int numofTuples = 0;
@@ -35,7 +37,7 @@ public class SubwayStationToiletInfoController {
             for(StationCode tempIdx : stationCodes)
             {
                 //https 를하면 첫날에는 됬는데 handshake오류가난다. https는 보안쪽에서 더 까다로워서.
-                String urlStr = "http://openapi.kric.go.kr/openapi/convenientInfo/stationToilet?serviceKey=$2a$10$Mj4bgn36lc9Eb1ODdU6fbuQuDHmeNVGNzVF1gcBqnNRNXqLD2onT." +
+                String urlStr = "http://openapi.kric.go.kr/openapi/vulnerableUserInfo/stationDisabledToilet?serviceKey=$2a$10$Mj4bgn36lc9Eb1ODdU6fbuQuDHmeNVGNzVF1gcBqnNRNXqLD2onT." +
                         "&format=json" +
                         "&railOprIsttCd=" + tempIdx.getRailOprIsttCd() +
                         "&lnCd=" + tempIdx.getLnCd() + "&stinCd=" + tempIdx.getStinCd();
@@ -55,7 +57,7 @@ public class SubwayStationToiletInfoController {
                 if(array != null) {
                     for (int i = 0; i < array.size(); i++) {
                         JSONObject tmp = (JSONObject) array.get(i);
-                        SubwayStationToiletInfo subwayStationToiletInfo = new SubwayStationToiletInfo(
+                        SubwayStationDisabledToiletInfo subwayStationDisabledToiletInfo = new SubwayStationDisabledToiletInfo(
                                 String.valueOf(tmp.get("railOprIsttCd")),
                                 String.valueOf(tmp.get("lnCd")),
                                 String.valueOf(tmp.get("stinCd")),
@@ -67,27 +69,8 @@ public class SubwayStationToiletInfoController {
                                 String.valueOf(tmp.get("mlFmlDvNm")),
                                 String.valueOf(tmp.get("toltNum")),
                                 String.valueOf(tmp.get("diapExchNum")));
-                        //이거 valueOf를 하는이유는 null이 널말고 string "null"로 들어갈수있기때문에 타입캐스팅 오류가 날수있어서.
-//                        System.out.println(
-//                                subwayStationToiletInfo.getOpenApiId() + " " +
-//                                subwayStationToiletInfo.getRailOprIsttCd() + " " +
-//                                        subwayStationToiletInfo.getLnCd() + " " +
-//                                        subwayStationToiletInfo.getStinCd() + " " +
-//                                        subwayStationToiletInfo.getGrndDvNm() + " " +
-//                                        subwayStationToiletInfo.getStinFlor() + " " +
-//                                        subwayStationToiletInfo.getGateInotDvNm() + " " +
-//                                        subwayStationToiletInfo.getExitNo() + " " +
-//                                        subwayStationToiletInfo.getDtlLoc() + " " +
-//                                        subwayStationToiletInfo.getMlFmlDvNm() + " " +
-//                                        subwayStationToiletInfo.getToltNum() + " " +
-//                                        subwayStationToiletInfo.getDiapExchNum()
-//                        );
-                        subwayStationToiletInfoRepository.save(subwayStationToiletInfo);
+                        subwayStationDisabledToiletInfoRepository.save(subwayStationDisabledToiletInfo);
                         numofTuples++;
-                        //SubwayStationInfoRepository 말고 이 컨트롤러에 대응하는 새로운 repository를 만들어줘여한다.
-                        //ORM기술은 객체를 관계형 데이터베이스에다 저장할수있게 매핑해주는 기술, 마치 sql처럼
-                        //1 엔티티 클래스 = 1 테이블. 각 컨트롤러당 저장하는 엔티티클래스가 다르기때문에 엔티티클래스를 저장할수있는
-                        // 새로운 리포지토리(테이블)를 생성해야한다.
                     }
                 }
             }
