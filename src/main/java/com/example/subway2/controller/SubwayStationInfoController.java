@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class SubwayStationInfoController {
-    //start_work1()
+    //start_work()
     private final SubwayStationInfoRepository subwayStationInfoRepository;
 
     @RequestMapping("/subwayinfo")
