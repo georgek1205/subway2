@@ -26,7 +26,6 @@ public class RealTimeStationArrivalController {
         String result = " ";
         int exceptionTrace = 0;
         try {
-            //https 를하면 첫날에는 됬는데 handshake오류가난다. https는 보안쪽에서 더 까다로워서.
             String urlStr = "http://swopenAPI.seoul.go.kr/api/subway/696c73416a67656f3637636b584a46/json/realtimeStationArrival/ALL";
             URL url = new URL(urlStr);
             BufferedReader br;
@@ -39,6 +38,8 @@ public class RealTimeStationArrivalController {
             JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
 
             //item 안쪽의 데이터는 [] 즉 배열의 형태이기에 제이슨 배열로 받아온다.
+            //여기도 뎁스가 코레일 api들처럼 싱글뎁스고, "body" 대신 "realtimeArrivalList" 여서 바로 가져올수있다.
+            //postman으로 뎁스 항상 확인.
             JSONArray array = (JSONArray) jsonObject.get("realtimeArrivalList");
 
             if(array != null) {

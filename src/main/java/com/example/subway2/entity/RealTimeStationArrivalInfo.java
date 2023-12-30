@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -85,6 +87,9 @@ public class RealTimeStationArrivalInfo {
     @Column(name = "arvlCd")
     private String arvlCd;
 
+    @Column(name = "Collected_at")
+    private LocalDateTime accessedAt;
+
     public RealTimeStationArrivalInfo(String subwayId, String subwayNm, String updnLine,
                                       String trainLineNm, String subwayHeading, String statnFid,
                                       String statnTid, String statnId, String statnNm, String trainCo,
@@ -115,5 +120,17 @@ public class RealTimeStationArrivalInfo {
         this.arvlMsg2 = arvlMsg2;
         this.arvlMsg3 = arvlMsg3;
         this.arvlCd = arvlCd;
+        this.accessedAt = LocalDateTime.now();
     }
+
+    @PrePersist
+    @PreUpdate
+    public void updateAccessedAt() {
+        this.accessedAt = LocalDateTime.now();
+    }
+
+    //즉, 개발자가 Hibernate를 사용하면, JPA의 인터페이스를 통해 데이터베이스를 객체 지향적으로 다룰 수 있으며,
+    // 이는 내부적으로는 ORM 기법을 통해 이루어집니다. 이렇게 하면 개발자는 SQL 쿼리를 직접 다루지 않아도 객체를
+    // 통해 데이터베이스 작업을 수행할 수 있으므로, 생산성을 크게 향상시킬 수 있습니다.
+    //Hibernate를 사용한다는 것은 JPA의 표준을 따르는 것이며, JPA는 ORM(Object-Relational Mapping)의 구동 원리를 기반으로 합니다.
 }

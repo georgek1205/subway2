@@ -6,6 +6,8 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -41,6 +43,10 @@ public class SubwayTrainTimetable {
     @Column(name = "dptTm")
     private String dptTm;
 
+    @Column(name = "Collected_at")
+    private LocalDateTime accessedAt;
+
+
     public SubwayTrainTimetable(String railOprIsttCd, String trnNo,
                                 String dayCd, String dayNm, String stinCd,
                                 String lnCd, String arvTm, String dptTm) {
@@ -52,5 +58,14 @@ public class SubwayTrainTimetable {
         this.lnCd = lnCd;
         this.arvTm = arvTm;
         this.dptTm = dptTm;
+        this.accessedAt = LocalDateTime.now();
     }
+
+    @PrePersist
+    @PreUpdate
+    public void updateAccessedAt() {
+        this.accessedAt = LocalDateTime.now();
+    }
+
+
 }

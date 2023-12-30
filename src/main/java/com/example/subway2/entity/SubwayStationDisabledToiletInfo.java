@@ -4,6 +4,8 @@ package com.example.subway2.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -47,6 +49,9 @@ public class SubwayStationDisabledToiletInfo {
     @Column(name = "diapExchNum")
     private String diapExchNum;
 
+    @Column(name = "Collected_at")
+    private LocalDateTime accessedAt;
+
     public SubwayStationDisabledToiletInfo(String railOprIsttCd, String lnCd, String stinCd,
                                            String grndDvNm, String stinFlor, String gateInotDvNm,
                                            String exitNo, String dtlLoc, String mlFmlDvNm,
@@ -62,5 +67,13 @@ public class SubwayStationDisabledToiletInfo {
         this.mlFmlDvNm = mlFmlDvNm;
         this.toltNum = toltNum;
         this.diapExchNum = diapExchNum;
+        this.accessedAt = LocalDateTime.now();
     }
+
+    @PrePersist
+    @PreUpdate
+    public void updateAccessedAt() {
+        this.accessedAt = LocalDateTime.now();
+    }
+
 }

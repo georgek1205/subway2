@@ -3,6 +3,8 @@ package com.example.subway2.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -46,6 +48,10 @@ public class SubwayStationToiletInfo {
     @Column(name = "diapExchNum")
     private String diapExchNum;
 
+    @Column(name = "Collected_at")
+    private LocalDateTime accessedAt;
+
+
     public SubwayStationToiletInfo(String railOprIsttCd, String lnCd,
                                    String stinCd, String grndDvNm, String stinFlor, String gateInotDvNm,
                                    String exitNo, String dtlLoc, String mlFmlDvNm, String toltNum,
@@ -62,5 +68,13 @@ public class SubwayStationToiletInfo {
         this.mlFmlDvNm = mlFmlDvNm;
         this.toltNum = toltNum;
         this.diapExchNum = diapExchNum;
+        this.accessedAt = LocalDateTime.now();
     }
+
+    @PrePersist
+    @PreUpdate
+    public void updateAccessedAt() {
+        this.accessedAt = LocalDateTime.now();
+    }
+
 }
